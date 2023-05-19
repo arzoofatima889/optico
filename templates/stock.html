@@ -1,0 +1,155 @@
+{% extends 'home.html' %} 
+{% block main %}
+<body>
+    <style>
+        .sub-parent {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            left: 0;
+            top: 0;
+            position: absolute;
+            align-items: center;
+        }
+        .topSection{
+            background-color: rgb(12, 99, 139);
+            color: #fff;
+            width: 100%;
+            padding-left: 3%;
+        }
+        .header {
+            margin-top: 2%;
+        }
+
+        .btn {
+            background-color: rgb(12, 99, 139);
+            color: #fff;
+            font: 20px;
+            padding: 10px 45px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-left: 0;
+            flex-wrap: wrap;
+        }
+
+        .formWrapper {
+            padding: 2%;
+        }
+        .labels{
+            margin-top: 10px; 
+            align-items: flex-start;
+        }
+        .addbtn {
+            background-color: rgb(12, 99, 139);
+            color: white;
+            font: 20px;
+            font-weight: 800;
+            padding: 6px 65px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.5s;
+            margin-top: 2%;
+        }
+
+        .addbtn:hover {
+            background-color: white;
+            color: rgb(12, 99, 139);
+            box-shadow: 0px 2px 10px rgb(151, 148, 148);
+
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            position: sticky;
+            /* border: 1px solid #dddddd; */
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        .table-wrapper {
+            height: 10%;
+            width: 60%;
+            padding: 0.5%;
+            border-radius: 5px;
+            transition: all 0.85s;
+            cursor: pointer;
+            margin-bottom: 1%;
+            box-shadow: 0px 2px 20px rgb(177, 174, 174);
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            margin-left:15%;
+            margin-top: 5%;
+        }
+
+        .table {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .table-wrapper:hover {
+            box-shadow: 0px 2px 4px rgb(177, 174, 174);
+        }
+    </style>
+    
+    <div class="container-fluid sub-parent">
+        <div class="row topSection">
+            <h1>Optical Shop</h1>
+        </div>
+        
+        <div class="table-wrapper">
+            <div class="table">
+                <table>
+                    <tr>
+                        <th style="width: 10%;">Sr.</th>
+                        <th style="width: 20%;">Name</th>
+                        <th style="width: 20%;">Gender</th>
+                        <th style="width: 20%;">Price</th>
+                        <th style="width: 20%;">Size</th>
+                        <th style="width: 20%;">Quantity</th>
+                        <th style="width: 40%;">Edit</th>
+                      </tr>
+                      {% for i in detail %}
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.genders_in_glasses}}</td>
+                        <td>{{i.sale_price}}</td>
+                        <td>{{i.size}}</td>
+                        <td>{{i.quantity}}</td>
+                        <td> <a class="addbtn" href="{% url 'products_edit' i.id %}">Edit</a></td>
+                        
+                      </tr>
+                      {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock main %}
+

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {% load static %}
+</head>
+
+<body>
+    <style>
+        .custom-nav {
+            background-image: linear-gradient(to bottom, rgb(27, 125, 171), rgb(11, 80, 112));
+            box-shadow: 0 2px 15px rgb(95, 90, 90);
+            height: 8vh;
+            width: 100%;
+            position: fixed;
+            z-index: 9999;
+        }
+
+        .parent {
+            width: 100%;
+
+        }
+
+        .left-top-section {
+            width: 20%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header {
+            max-width: 85%;
+            background-color: transparent;
+        }
+
+        .logo {
+            color: white;
+            font: 37px;
+            font-weight: 800;
+        }
+
+        .logo:hover {
+            color: white;
+        }
+
+        .screen {
+            display: none;
+            background-color: transparent;
+            border: none;
+        }
+
+        .icon-wrapper {
+            max-width: 10%;
+        }
+
+        .icon {
+            font-size: 23px;
+            color: white;
+        }
+
+        .search-section {
+            display: flex;
+            align-items: center;
+            width: 55%;
+        }
+
+
+        .right-top-section {
+            width: 25%;
+            display: flex;
+            align-items: center;
+        }
+
+        .bell {
+            max-width: 18%;
+            margin-right: 5px;
+        }
+
+        .admin {
+            max-width: 65%;
+            border-right: 1px solid rgb(105, 104, 104);
+            border-left: 1px solid rgb(105, 104, 104);
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-input {
+            width: 90%;
+            background-color: transparent;
+            border: none;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .custom-input:focus {
+            border: 2px solid red;
+        }
+
+        .sidebar {
+            display: flex;
+            width: 15%;
+            margin-top: 8vh;
+            height: 100vh;
+            z-index: 9999;
+            position: fixed;
+            align-items: flex-start;
+            padding-left: 1%;
+            justify-content: center;
+            box-shadow: 0 2px 15px rgb(95, 90, 90);
+            background-image: linear-gradient(to bottom, rgb(27, 125, 171), rgb(11, 80, 112));
+
+        }
+
+        .menu {
+            align-items: flex-start;
+        }
+
+        .menu-header {
+            margin-top: 5%;
+        }
+
+        .label {
+            color: white;
+
+        }
+
+        .menu-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 1%;
+            margin-bottom: 1%;
+            list-style-type: none;
+        }
+
+        .menu-block {
+            display: flex;
+            flex-direction: row;
+            max-width: 100%;
+            margin-bottom: 3%;
+        }
+
+        .icon-style-wrapper {
+            max-width: 15%;
+
+        }
+
+        .list-style-wrapper {
+            cursor: pointer !important;
+        }
+
+        .list-style {
+            color: rgb(218, 208, 208);
+            margin-top: 8px;
+            font-size: 15px;
+            align-self: center;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .sidebar-wrapper {
+            padding: 0% !important;
+            height: calc(370vh - 8vh);
+            display: flex;
+
+        }
+
+        .icon-style {
+            font-size: 20px;
+            margin-top: 10px;
+            height: 15px;
+            width: 15px;
+            color: rgba(180, 176, 176, 0.795);
+        }
+
+        .show {
+            display: none;
+            color: white;
+        }
+
+        .center-logo {
+            display: none;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td {
+            position: sticky;
+            /* border: 1px solid #dddddd; */
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .display {
+            width: 95%;
+            margin-bottom: 0;
+            margin-right: 0;
+            margin-top: 0%;
+            margin-left: 15%;
+            padding-left: 1%;
+            padding-top: 5%;
+            height: 100vh;
+        }
+
+        .block-wrapper {
+            height: 35%;
+            width: 25%;
+            border-radius: 5px;
+            transition: all 0.85s;
+            cursor: pointer;
+            margin-bottom: 1%;
+            margin-right: 5%;
+            box-shadow: 0px 2px 20px rgb(177, 174, 174);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .block-wrapper:hover {
+            box-shadow: 0px 2px 4px rgb(177, 174, 174);
+        }
+
+        .content {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            height: 10vh;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .pics {
+            width: 100%;
+            height: 70%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .greetings-wrapper {
+            padding-top: 0;
+            padding-right: 0;
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+            margin-right: 10%;
+        }
+
+        .greetings {
+            font-size: 30px;
+            margin: 0;
+            font-weight: 500;
+            font-family: arial, sans-serif;
+        }
+
+        .status-block {
+            border: 0.5px solid rgb(210, 202, 202);
+            border-radius: 4px;
+            margin-left: 15px;
+            margin-right: 15px;
+            padding: 0;
+        }
+
+        .inner-status-block {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .status-images-container {
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+
+        }
+
+        .status-images {
+            height: 100%;
+            width: 100%;
+        }
+
+        .status {
+            margin-top: 5%;
+        }
+
+        .status-images-inner-container {
+            background-color: rgb(172, 162, 162);
+            width: 70%;
+            height: 75%;
+            padding: 5%;
+            border-radius: 5px;
+        }
+
+        .prog-row {
+            padding-left: 5%;
+            padding-right: 5%;
+            margin-top: 5%;
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .card-block-container {
+            margin-top: 5%;
+            padding: 0;
+            margin-right: 0;
+        }
+
+        .card-block-inner-container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .card-block {
+            border: 1px solid #DCDFE8;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid #DCDFE8;
+            margin: 0;
+            padding: 20px;
+        }
+        .top-products-block-container{
+            
+            padding: 0;
+            margin-right: 0;
+            margin-top: 1%;
+        }
+        .product-block{
+            padding: 15px;
+            margin: 0;
+        }
+    </style>
+    <!-- ---------------------------------------------NAV BAR------------------------------------------------- -->
+    <nav class="navbar  custom-nav">
+        <div class="container-fluid parent">
+            <div class="col header">
+                <a href="{% url 'home' %}" class="navbar-brand logo">OPTICAL SHOP</a>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <!-- ---------------------------------------------SIDE BAR------------------------------------------------- -->
+    <div class="container-fluid sidebar-wrapper">
+        <aside id="side" class='sidebar'>
+            <div class="container menu">
+                <div class="row menu-header">
+                    <div class="col">
+                        <h5 id="menu" class="label">Menu</h5>
+                    </div>
+                </div>
+                <ul class="row menu-wrapper">
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-solid fa-house icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'home' %}">Dashboard</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-sharp fa-solid fa-envelopes-bulk icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'customer' %}">Customers</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-sharp fa-solid fa-envelopes-bulk icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'vendors' %}">Vendors</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-solid fa-users-between-lines icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'purchaseOrder' %}">Store</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-solid fa-users-between-lines icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'brands' %}">Brands</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-solid fa-file icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'glassesTypes' %}">Glasses Types</a>
+                        </li>
+                    </div>
+                    <div class='menu-block'>
+                        <li class='col icon-style-wrapper'><i class='fa-solid fa-list icon-style'
+                                aria-hidden='true'></i></li>
+                        <li id='menu-list' class='col list-style-wrapper'><a class='list-group-item list-style'
+                                href="{% url 'products' %}">Products</a>
+                        </li>
+                    </div>
+
+                </ul>
+            </div>
+        </aside>
+
+        <!------------------------------Content------------------------>
+
+        <div class="row-6 display">
+            {% block main %}
+            <!------------------------------Status Section------------------------>
+            <div class="row content">
+                <div class="col greetings-wrapper">
+                    <p class="greetings">Hi, Good Morning</p>
+                </div>
+                <div class="col status-block">
+                    <div class="row inner-status-block">
+                        <div class="col-4 status-images-container">
+                            <div class="row status-images-inner-container">
+                                <img class="status-images" src="{% static 'images/cost.png'%}" alt='sales' />
+                            </div>
+                        </div>
+                        <div class="col status">
+                            <h7>Total Cost</h7>
+                            <h4>Total Cost</h4>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col status-block">
+                    <div class="row inner-status-block">
+                        <div class="col-4 status-images-container">
+                            <div class="row status-images-inner-container">
+                                <img class="status-images" src="{% static 'images/sales.png'%}" alt='sales' />
+                            </div>
+                        </div>
+                        <div class="col" style="margin-top:5%">
+                            <h7>Total Sales</h7>
+                            <h4>Total Sales</h4>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col status-block">
+                    <div class="row inner-status-block">
+                        <div class="col-4 status-images-container">
+                            <div class="row status-images-inner-container">
+                                <img class="status-images" src="{% static 'images/products.png'%}" alt='sales' />
+                            </div>
+                        </div>
+                        <div class="col" style="margin-top:5%">
+                            <h7>Total Products</h7>
+                            <h4>Total Products</h4>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!------------------------------Graphs------------------------>
+            <div class="row card-block-container">
+                <div class="col card-block-inner-container">
+                    <div class="row card-block">
+                        <div class="row card-header">
+                            <p style="font-size: 25px;margin: 0;padding: 0;">Sales Overview</p>
+                        </div>
+                        <div class="row">
+                            <div id="chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col card-block-inner-container">
+                    <div class="row card-block">
+                        <div class="row card-header">
+                            <p style="font-size: 25px;margin: 0;padding: 0;">Income and Expenses</p>
+                        </div>
+                        <div class="row">
+                            <div id="brandchart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------Top Products------------------------>
+            <div class="row top-products-block-container">
+                <div class="col-8 card-block-inner-container">
+                    <div class="row card-block">
+                        <div class="row card-header">
+                            <p style="font-size: 25px;margin: 0;padding: 0;">Top Products</p>
+                        </div>
+                        <div class="row product-block">
+                            <div class="col">hgdkjsdckae</div>
+                            <div class="col">hgdkjsdckae</div>
+                            <div class="col">hgdkjsdckae</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col card-block-inner-container">
+                    <div class="row card-block">
+                        <div class="row card-header">
+                            <p style="font-size: 25px;margin: 0;padding: 0;">Best of All time</p>
+                        </div>
+                        <div class="row product-block">
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock main %}
+        </div>
+
+    </div>
+
+</body>
+<script>
+    var options = {
+        chart: {
+            type: 'bar'
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'center', // top, center, bottom
+                },
+            }
+        },
+        series: [{
+            name: 'Sales',
+            data: [35000, 6000, 4500, 12900, 45070, 18000, 22000, 31000, 40800]
+        }],
+        xaxis: {
+            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        }
+    }
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+</script>
+<script>
+
+
+    var options = {
+        series: [{
+            name: 'Expense',
+            data: [31, 40, 28, 51, 200, 109, 150,105,99,78,44,200]
+        }, {
+            name: 'Income',
+            data: [11, 32, 45,109, 150,105,190,78, 32, 34, 52, 41]
+        }],
+        chart: {
+            height: 465,
+            type: 'area'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        }
+        
+    };
+
+    var chart = new ApexCharts(document.querySelector("#brandchart"), options);
+    chart.render();
+
+
+
+
+</script>
+
+
+
+
+</html>

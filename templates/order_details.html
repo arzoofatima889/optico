@@ -1,0 +1,220 @@
+{% extends 'home.html' %} 
+{% block main %}
+<body>
+    <style>
+        .sub-parent {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            left: 0;
+            top: 0;
+            position: absolute;
+            align-items: center;
+        }
+       
+        .topic-header {
+            margin-top: 2%;
+        }
+
+        .btn {
+            background-color: rgb(12, 99, 139);
+            color: #fff;
+            font: 20px;
+            padding: 10px 50px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-left: 0;
+            flex-wrap: wrap;
+        }
+
+        .formWrapper {
+            padding: 2%;
+        }
+        .labels{
+            margin-top: 10px; 
+            align-items: flex-start;
+        }
+        .additem{
+            background-color: rgb(12, 99, 139);
+            color: white;
+            font: 20px;
+            font-weight: 800;
+            padding: 3px 45px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.5s;
+            margin-top: 2%;
+        }
+
+        .additem:hover {
+            background-color: white;
+            color: rgb(12, 99, 139);
+            box-shadow: 0px 2px 10px rgb(151, 148, 148);
+
+        }
+        
+        .addbtn {
+            background-color: rgb(12, 99, 139);
+            color: white;
+            font: 20px;
+            font-weight: 800;
+            padding: 6px 40px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.5s;
+        }
+
+        .addbtn:hover {
+            background-color: white;
+            color: rgb(12, 99, 139);
+            box-shadow: 0px 2px 10px rgb(151, 148, 148);
+
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            position: sticky;
+            /* border: 1px solid #dddddd; */
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        .table-wrapper {
+            height: 10%;
+            width: 60%;
+            padding: 0.5%;
+            border-radius: 5px;
+            transition: all 0.85s;
+            cursor: pointer;
+            margin-bottom: 1%;
+            box-shadow: 0px 2px 20px rgb(177, 174, 174);
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            margin-left:15%;
+        }
+
+        .table {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .table-wrapper:hover {
+            box-shadow: 0px 2px 4px rgb(177, 174, 174);
+        }
+        .calculation-block{
+            display: flex;
+            width: 40%; 
+            justify-content: space-between;
+        }
+        .detail-block{
+            padding: 0.5%;
+            border-radius: 5px;
+            transition: all 0.85s;
+            cursor: pointer;
+            margin-bottom: 1%;
+            box-shadow: 0px 2px 20px rgb(177, 174, 174);
+            justify-content: center;
+            align-items: center;
+            width: 40%; height: 5vh;
+            background-color: white;
+        }
+        .text-style-wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .text-style{
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    
+    <div class="container-fluid sub-parent">
+        
+        <div class="row topic-header">
+            <h2>Purchase Order</h2>
+        </div>
+        <div class="row formWrapper">
+            <form method="POST" class="inline-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for form in formset %}
+                {{formset.management_form}}
+                {% for field in form %}
+                <label class="labels">{{field.label}}</label>
+                {{field}}
+                
+                {% endfor %}
+                {% endfor %}
+                <button class="additem" type="submit">Add</button>
+                <a class="addbtn" href="{% url 'purchaseOrder' %}" >Go Back</a>
+            </form>
+        </div>
+        <div class="table-wrapper">
+            <div class="table">
+                <table>
+                    <tr>
+                        <th style="width: 10%;">Sr.</th>
+                        <th style="width: 20%;">Products</th>
+                        <th style="width: 20%;">Price</th>
+                        <th style="width: 20%;">Quantity</th>
+                        <th style="width: 20%;">Total</th>
+                        <th style="width: 40%;">Edit</th>
+                      </tr>
+                      {% for i in detail %}
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.products.name}}</td>
+                        <td>{{i.products.purchase_price}}</td>
+                        <td>{{i.quantity}}</td>
+                        <td>{{i.amount}}</td>
+                        <td> <a class="addbtn" href="{% url 'purchase_Order_Detail_Item_edit'  i.purchase_Order.id i.id %}">Edit</a></td> 
+                      </tr>
+                      {% endfor %}
+                      
+                </table>    
+            </div>
+        </div>
+        <div class="calculation-block" >
+            <div class="detail-block">
+                <div class="text-style-wrapper">
+                    <p class="text-style">Total Items = {{items}}</p>
+                </div>
+            </div>
+            <div class="detail-block">
+                <div class="text-style-wrapper">
+                    <p class="text-style">Total Amount = {{subtotal}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock main %}
